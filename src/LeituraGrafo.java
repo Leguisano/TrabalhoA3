@@ -178,6 +178,32 @@ public class LeituraGrafo {
 
     }
 
+    public double buscarDistancia(int origem, int destino){
+        if(matrizConexoes[origem][destino] == 0){
+            return -1;
+        }
+
+        NoDistancia atual = inicioDistancias;
+        while(atual != null){
+            boolean achouIda = (atual.origem == origem && atual.destino == destino);
+            boolean achouVolta = (atual.origem == destino && atual.destino == origem);
+
+            if(achouIda || achouVolta){
+                return atual.distancia;
+            }
+            atual = atual.prox;
+
+        }
+        return -1;    
+    }
+
+    public boolean existeConexao(int origem, int destino){
+        if(origem < 0 || origem >= capacidadeMaxima || destino < 0 || destino >= capacidadeMaxima){
+            return false;
+        }
+        
+        return matrizConexoes[origem][destino] == 1;
+    }
 
     public void imprimirRelatorio(){
         System.out.println("=== Relatório do Grafo ===");
@@ -187,7 +213,7 @@ public class LeituraGrafo {
             String nomeOrigem = getNomePeloId(viagem.origem);
             String nomeDestino = getNomePeloId(viagem.destino);
             
-            System.out.println("Rota: " + nomeOrigem + " <--> " + nomeDestino + " | Distância: " + viagem.distancia + "km");
+            System.out.println("Rota: " + nomeOrigem + " <--> " + nomeDestino + " | Distância: " + viagem.distancia + "km\n");
 
             viagem = viagem.prox;
         }
